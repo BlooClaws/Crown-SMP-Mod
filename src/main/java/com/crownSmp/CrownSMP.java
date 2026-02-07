@@ -1,12 +1,13 @@
-package com.example;
+package com.crownSmp;
 
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExampleMod implements ModInitializer {
-	public static final String MOD_ID = "modid";
+
+public class CrownSMP implements ModInitializer {
+	public static final String MOD_ID = "Crown SMP";
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -18,6 +19,8 @@ public class ExampleMod implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		ModItems.registerItems();
 
 		LOGGER.info("Hello Fabric world!");
 	}

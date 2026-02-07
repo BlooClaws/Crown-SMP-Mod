@@ -1,4 +1,4 @@
-package com.example;
+package com.crownSmp;
 
 import net.fabricmc.api.ClientModInitializer;
 

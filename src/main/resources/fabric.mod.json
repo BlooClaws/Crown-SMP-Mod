@@ -1,11 +1,11 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "crown_smp",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Crown SMP",
+	"description": "Get your crown, get your ability. Fight to win!",
 	"authors": [
-		"Me!"
+		"BlooClaws"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.crownSmp.CrownSMP"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"com.crownSmp.ExampleModClient"
 		]
 	},
 	"mixins": [
