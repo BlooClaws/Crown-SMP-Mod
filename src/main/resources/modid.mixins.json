@@ -3,7 +3,7 @@
 	"package": "com.crownSmp.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"CrownMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
