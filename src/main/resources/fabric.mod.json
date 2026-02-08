@@ -12,20 +12,20 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+
 	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"com.crownSmp.CrownSMP"
 		],
 		"client": [
-			"com.crownSmp.ExampleModClient"
+			"com.crownSmp.CrownModClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"crown_smp.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "crown_smp.client.mixins.json",
 			"environment": "client"
 		}
 	],
