@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import org.jspecify.annotations.Nullable;
 
-public class InfernoCrownItem extends Item {
-    public InfernoCrownItem(Settings settings) {
+public class InfernoCrown extends Item {
+    public InfernoCrown(Settings settings) {
         super(settings);
     }
 
@@ -26,7 +26,7 @@ public class InfernoCrownItem extends Item {
                 // Apply Fire Resistance for 200 ticks (10 seconds)
                 // Duration is kept short so it disappears quickly when the crown is removed
                 player.addStatusEffect(new StatusEffectInstance(
-                        StatusEffects.FIRE_RESISTANCE, 200, 0, false, false, false
+                        StatusEffects.FIRE_RESISTANCE, 200, 1, false, false, true
                 ));
             }
         }

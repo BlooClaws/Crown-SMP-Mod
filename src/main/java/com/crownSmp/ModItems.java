@@ -1,11 +1,12 @@
 package com.crownSmp;
 
 import net.minecraft.component.type.DeathProtectionComponent;
-import net.minecraft.component.type.LoreComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -16,7 +17,6 @@ import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 
 import java.util.Collections;
-import java.util.List;
 
 
 public class ModItems {
@@ -30,51 +30,82 @@ public class ModItems {
     public static Item OCEAN_CROWN;
     public static Item WEALTH_CROWN;
 
-    // 2. A helper method to register and initialize at the same time
-    private static Item register(String name, Item item) {
-        return Registry.register(Registries.ITEM, Identifier.of(MOD_ID, name), item);
-    }
 
+    private static Item register(String name, java.util.function.Function<Item.Settings, Item> factory, Item.Settings settings) {
+        // Create the RegistryKey for the item
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
+
+        // Pass the key into settings and then create the item
+        Item item = factory.apply(settings.registryKey(key));
+
+        // Register the item using that same key
+        return Registry.register(Registries.ITEM, key, item);
+    }
     public static void registerItems() {
 
-        AGILITY_CROWN = register("agility_crown", new Item(new Item.Settings()
+        AGILITY_CROWN = register("agility_crown", Item:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
-                .component(DataComponentTypes.LORE, new LoreComponent(List.of(
-                        Text.translatable("item.crown_smp.agility_crown").formatted(Formatting.BLUE, Formatting.ITALIC))))
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown")
+                        .formatted(Formatting.BLUE, Formatting.BOLD))
                 .component(DataComponentTypes.DEATH_PROTECTION, new DeathProtectionComponent(Collections.emptyList()))
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_armor"), 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.ATTACK_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_attack_speed"), 0.3, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MOVEMENT_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_speed"), 0.2, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_max_health"), 4.0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .build())));
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.ATTACK_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_attack_speed"),
+                                0.3, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MOVEMENT_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_speed"),
+                                0.3, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_max_health"),
+                                4, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
 
-        STRENGTH_CROWN = register("strength_crown", new Item(new Item.Settings()
+        STRENGTH_CROWN = register("strength_crown", Item:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
-                .component(DataComponentTypes.LORE, new LoreComponent(List.of(
-                        Text.translatable("item.crown_smp.strength_crown").formatted(Formatting.RED, Formatting.ITALIC))))
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Strength Crown")
+                        .formatted(Formatting.RED, Formatting.BOLD))
                 .component(DataComponentTypes.DEATH_PROTECTION, new DeathProtectionComponent(Collections.emptyList()))
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_armor"), 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_attack_damage"), 4.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_max_health"), -2.0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .build())));
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_attack_damage"),
+                                4.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_max_health"),
+                                -2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
 
-        INFERNO_CROWN = register("inferno_crown", new InfernoCrownItem(new Item.Settings()
+        INFERNO_CROWN = register("inferno_crown", Item:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
-                .component(DataComponentTypes.LORE, new LoreComponent(List.of(
-                        Text.translatable("item.crown_smp.inferno_crown").formatted(Formatting.GOLD, Formatting.ITALIC))))
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Inferno Crown")
+                        .formatted(Formatting.GOLD, Formatting.BOLD))
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_armor"), 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .build())));
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
 
-        HEALTH_CROWN = register("health_crown", new Item(new Item.Settings().maxCount(1).equippable(EquipmentSlot.HEAD)));
+        HEALTH_CROWN = register("health_crown", Item:: new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Health Crown")
+                        .formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD))
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_max_health"),
+                                20, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
+        OCEAN_CROWN = register("ocean_crown", Item:: new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Oceanic Crown")
+                        .formatted(Formatting.DARK_BLUE, Formatting.BOLD)));
 
-        OCEAN_CROWN = register("ocean_crown", new Item(new Item.Settings().maxCount(1).equippable(EquipmentSlot.HEAD)));
-
-        WEALTH_CROWN = register("wealth_crown", new Item(new Item.Settings().maxCount(1).equippable(EquipmentSlot.HEAD)));
+        WEALTH_CROWN = register("wealth_crown", Item:: new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Wealth Crown")
+                        .formatted(Formatting.GREEN)));
     }
 }
