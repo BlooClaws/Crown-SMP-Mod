@@ -7,16 +7,10 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-/* import net.minecraft.recipe.RecipeManager;
-import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.recipe.input.SingleStackRecipeInput; */
+import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.server.world.ServerWorld;
-// import net.minecraft.util.Hand;
-// import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
-// import java.util.Optional;
 
 public class InfernoCrown extends Item {
     public InfernoCrown(Settings settings) {
@@ -27,56 +21,51 @@ public class InfernoCrown extends Item {
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         super.inventoryTick(stack, world, entity, slot);
 
+        // Fire Resistance
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
             if (headStack == stack) {
-                // Apply Fire Resistance for 200 ticks (10 seconds)
-                // Duration is kept short so it disappears quickly when the crown is removed
+                // Apply Fire Resistance for 10 seconds
                 player.addStatusEffect(new StatusEffectInstance(
-                        StatusEffects.FIRE_RESISTANCE, 200, 0, false, false, false));
+                        StatusEffects.FIRE_RESISTANCE, 0, 0, false, false, false));
 
-                // if (player.isSneaking()) {
-                // cookItemInHand(player, world);
+                // Smelting Items
+                if (player.isSneaking() && world.getTime() % 50 == 0) {
+                    ItemStack handStack = player.getMainHandStack();
 
+                    if (!handStack.isEmpty()) {
+                        ItemStack result = getSmeltedResult(world, handStack);
+
+                        // If the result is different from the original, smelting happened
+                        if (result != handStack) {
+                            // Shrink original stack by 1
+                            handStack.decrement(1);
+                            // Give the player 1 of the cooked version
+                            player.getInventory().offerOrDrop(result.copyWithCount(1));
+
+                            // Visual/Sound feedback
+                            world.playSound(null, player.getBlockPos(),
+                                    net.minecraft.sound.SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE,
+                                    net.minecraft.sound.SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        }
+                    }
+                }
             }
         }
     }
+    private ItemStack getSmeltedResult(ServerWorld world, ItemStack stack) {
+        // 1. Wrap the stack in the new 1.21 input type
+        SingleStackRecipeInput input = new SingleStackRecipeInput(stack);
+
+        // 2. Query the RecipeManager using the new input wrapper
+        return world.getRecipeManager()
+                .getFirstMatch(RecipeType.SMELTING, input, world)
+                .map(recipeEntry -> {
+                    // 1.21 uses RecipeEntry; we need to call .value() to get the actual recipe
+                    ItemStack result = recipeEntry.value().craft(input, world.getRegistryManager());
+                    // Optional: Ensure the result stack size matches the input if needed
+                    return result;
+                })
+                .orElse(stack);
+    }
 }
-    /*private void cookItemInHand(PlayerEntity player, World world) {
-        // Check every 40 ticks (2 seconds) to avoid instant smelting
-        if (world.getTime() % 40 != 0) return;
-
-        ItemStack mainHand = player.getMainHandStack();
-        if (mainHand.isEmpty()) return;
-
-        // 1.21 uses SingleStackRecipeInput for cooking recipes
-        SingleStackRecipeInput input = new SingleStackRecipeInput(mainHand);
-
-        // Look for a valid smelting recipe
-        Optional<RecipeEntry<SmeltingRecipe>> match = world.getRecipeManager()
-                .getSynchronizedRecipes().getFirstMatch(RecipeType.SMELTING, input, world);
-
-        if (match.isPresent()) {
-            // Get the output stack from the recipe
-            ItemStack recipeResult = match.get().value().getOutput(world.getRegistryManager());
-
-            if (!recipeResult.isEmpty()) {
-                // Create a copy of the result to avoid modifying the recipe's base stack
-                ItemStack resultStack = recipeResult.copy();
-
-                // Handle the item swap
-                mainHand.decrement(1); // Remove 1 from the input stack
-
-                if (mainHand.isEmpty()) {
-                    // If input is gone, put result directly in hand
-                    player.setStackInHand(Hand.MAIN_HAND, resultStack);
-                } else {
-                    // If input remains, give result to player (drops on floor if inventory full)
-                    player.getInventory().offerOrDrop(resultStack);
-                }
-
-                // Optional: Play a sound or add particles for feedback
-                // world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 0.5f, 1.0f);
-            }
-        }
-    } */

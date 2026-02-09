@@ -1,7 +1,14 @@
 package com.crownSmp;
 
 import net.fabricmc.api.ModInitializer;
-
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +30,38 @@ public class CrownSMP implements ModInitializer {
 
 		ModItems.registerItems();
 
-		LOGGER.info("Hello Fabric world!");
+		// FIRE ASPECT LOGIC: Triggered when ANY entity is hit
+		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			// We only care about what happens on the server
+			if (!world.isClient()) {
+				ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
+
+				// Check if the player is wearing your specific crown
+				if (headStack.getItem() instanceof InfernoCrown) {
+					// Seconds Enemy is on Fire
+					entity.setOnFireFor(4.0f);
+				}
+			}
+			return ActionResult.PASS;
+		});
+
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
+			for (ServerWorld world : server.getWorlds()) {
+				for (Entity entity : world.iterateEntities()) {
+					if (entity instanceof IronGolemEntity golem && golem.isPlayerCreated()) {
+						// If the "timer" (Luck effect) is gone, discard the golem
+						if (!golem.hasStatusEffect(StatusEffects.SPEED)) {
+							// Visual effect before they vanish
+							world.spawnParticles(net.minecraft.particle.ParticleTypes.POOF,
+									golem.getX(), golem.getY() + 1, golem.getZ(), 10, 0.2, 0.2, 0.2, 0.1);
+							golem.discard();
+
+
+							LOGGER.info("Hello Fabric world!");
+						}
+					}
+				}
+			}
+		});
 	}
 }

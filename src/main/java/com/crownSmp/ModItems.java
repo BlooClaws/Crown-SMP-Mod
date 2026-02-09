@@ -98,16 +98,34 @@ public class ModItems {
                         .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_max_health"),
                                 20, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
-        OCEAN_CROWN = register("ocean_crown", Item:: new, new Item.Settings()
+        OCEAN_CROWN = register("ocean_crown", OceanCrown:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Oceanic Crown")
-                        .formatted(Formatting.DARK_BLUE, Formatting.BOLD)));
+                        .formatted(Formatting.DARK_BLUE, Formatting.BOLD))
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_water_movement_efficiency"),
+                                1.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.SUBMERGED_MINING_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_submerged_mining_speed"),
+                                4.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
 
-        WEALTH_CROWN = register("wealth_crown", Item:: new, new Item.Settings()
+        WEALTH_CROWN = register("wealth_crown", WealthCrown:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Wealth Crown")
-                        .formatted(Formatting.GREEN)));
+                        .formatted(Formatting.GREEN))
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.BLOCK_INTERACTION_RANGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_block_interaction_range"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.LUCK, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_luck"),
+                                2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.SPAWN_REINFORCEMENTS, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_spawn_reinforcements"),
+                                5.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
     }
 }
