@@ -75,7 +75,7 @@ public class ModItems {
                                 -2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        INFERNO_CROWN = register("inferno_crown", Item:: new, new Item.Settings()
+        INFERNO_CROWN = register("inferno_crown", InfernoCrown:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Inferno Crown")
@@ -83,6 +83,8 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_burning_time"),
+                                -0.97, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
                         .build()));
 
         HEALTH_CROWN = register("health_crown", Item:: new, new Item.Settings()
