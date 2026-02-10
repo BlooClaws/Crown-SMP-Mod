@@ -1,6 +1,5 @@
 package com.crownSmp;
 
-import net.minecraft.component.type.DeathProtectionComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -16,8 +15,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.util.Unit;
-
-import java.util.Collections;
 
 
 public class ModItems {

@@ -62,9 +62,8 @@ public class InfernoCrown extends Item {
                 .getFirstMatch(RecipeType.SMELTING, input, world)
                 .map(recipeEntry -> {
                     // 1.21 uses RecipeEntry; we need to call .value() to get the actual recipe
-                    ItemStack result = recipeEntry.value().craft(input, world.getRegistryManager());
                     // Optional: Ensure the result stack size matches the input if needed
-                    return result;
+                    return recipeEntry.value().craft(input, world.getRegistryManager());
                 })
                 .orElse(stack);
     }

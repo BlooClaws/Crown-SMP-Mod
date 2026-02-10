@@ -12,10 +12,8 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.util.math.Box;
 import java.util.List;
@@ -38,7 +36,7 @@ public class WealthCrown extends Item {
                         StatusEffects.HERO_OF_THE_VILLAGE, 0, 0, false, false, false));
 
                 if (player.hurtTime > 0 && player.getRandom().nextFloat() < 1) { // 100% chance per hit
-                    spawnGuard(player, (ServerWorld) world);
+                    spawnGuard(player, world);
                 }
             }
         }
