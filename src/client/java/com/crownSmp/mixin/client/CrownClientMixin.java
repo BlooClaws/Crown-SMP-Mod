@@ -2,13 +2,15 @@ package com.crownSmp.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public class CrownClientMixin {
-	private boolean initialized = false;
+	@Unique
+    private boolean initialized = false;
 
 	@Inject(at = @At("HEAD"), method = "tick")
 	private void onTick(CallbackInfo info) {
