@@ -27,11 +27,11 @@ public class WealthCrown extends Item {
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         super.inventoryTick(stack, world, entity, slot);
 
-        // Fire Resistance
+        // Effects for wealth crown
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
             if (headStack == stack) {
-                // Apply Fire Resistance for 10 seconds
+                // Apply hero of the village
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.HERO_OF_THE_VILLAGE, 0, 0, false, false, false));
 
@@ -45,7 +45,7 @@ public class WealthCrown extends Item {
         private void spawnGuard(PlayerEntity player, ServerWorld world) {
             Box box = player.getBoundingBox().expand(20.0);
 
-            // Find golems that are player-created
+            // Find golems that are player created
             List<IronGolemEntity> golems = world.getEntitiesByType(EntityType.IRON_GOLEM, box,
                     IronGolemEntity::isPlayerCreated);
 
@@ -66,14 +66,13 @@ public class WealthCrown extends Item {
                         team.setColor(Formatting.GREEN);
                     }
 
-                    // 2. ADD GOLEM TO TEAM
-                    // Use the UUID string or name for the scoreboard
+                    // Add the golems to the team
                     scoreboard.addScoreHolderToTeam(golem.getUuidAsString(), team);
 
                     golem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0, false, false, false));
                     golem.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0, false, false, false));
 
-                    // Set the golem's target to the player's attacker if they exist
+                    // Set the golem's target to the player's attacker
                     if (player.getAttacker() != null) {
                         golem.setTarget(player.getAttacker());
                     }

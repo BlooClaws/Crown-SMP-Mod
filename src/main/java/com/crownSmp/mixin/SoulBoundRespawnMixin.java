@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class SoulBoundRespawnMixin {
     @Inject(method = "copyFrom", at = @At("TAIL"))
     private void restoreSoulBound(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
-        if (!alive) { // This confirms the 'copy' is happening because of a death
+        if (!alive) { // This confirms the copy is happening because of a death
             ServerPlayerEntity newPlayer = (ServerPlayerEntity) (Object) this;
             for (int i = 0; i < oldPlayer.getInventory().size(); i++) {
                 ItemStack stack = oldPlayer.getInventory().getStack(i);

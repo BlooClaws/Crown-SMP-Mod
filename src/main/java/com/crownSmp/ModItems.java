@@ -20,7 +20,7 @@ import net.minecraft.util.Unit;
 public class ModItems {
     public static final String MOD_ID = "crown_smp";
 
-    // 1. Declare the items here (but don't initialize them yet)
+    // Declaring the items before initializing them
     public static Item AGILITY_CROWN;
     public static Item STRENGTH_CROWN;
     public static Item INFERNO_CROWN;
@@ -30,32 +30,30 @@ public class ModItems {
 
 
     private static Item register(String name, java.util.function.Function<Item.Settings, Item> factory, Item.Settings settings) {
-        // Create the RegistryKey for the item
+
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, name));
 
-        // Pass the key into settings and then create the item
         Item item = factory.apply(settings.registryKey(key));
 
-        // Register the item using that same key
         return Registry.register(Registries.ITEM, key, item);
     }
     public static void registerItems() {
-
+// Crown #1
         AGILITY_CROWN = register("agility_crown", Item:: new, new Item.Settings()
-                .maxCount(1)
-                .equippable(EquipmentSlot.HEAD)
-                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown")
+                .maxCount(1) // Sets stack count to 1
+                .equippable(EquipmentSlot.HEAD) // Makes equippable to helmet slot
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown") // Turns the text blue in color and bold
                         .formatted(Formatting.BLUE, Formatting.BOLD))
-                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE) // Keeps the item on death
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_armor"),
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_armor"), // Sets crown to diamond helmet level
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.ATTACK_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_attack_speed"),
+                        .add(EntityAttributes.ATTACK_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_attack_speed"), // Increases attack speed by 30%
+                                0.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MOVEMENT_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_speed"), // Increases movement speed by 50%
                                 0.3, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MOVEMENT_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_speed"),
-                                0.3, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_max_health"),
-                                4, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_max_health"), // Increases health by 2 hearts
+                                4, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD) // AttributeModifierSlot.HEAD makes it so you only get the effects when wearing it
                         .build()));
 
         STRENGTH_CROWN = register("strength_crown", Item:: new, new Item.Settings()
@@ -67,13 +65,13 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_attack_damage"),
+                        .add(EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_attack_damage"), // Increases attack damage by 450% (between strength 1 and 2)
                                 4.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_max_health"),
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_max_health"), // Decreases health by 1 heart
                                 -2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        INFERNO_CROWN = register("inferno_crown", InfernoCrown:: new, new Item.Settings()
+        INFERNO_CROWN = register("inferno_crown", InfernoCrown:: new, new Item.Settings() // Instead of Item:: new it is InfernoCrown:: new so we can call InfernoCrown.java for fire res and smelting
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Inferno Crown")
@@ -82,7 +80,7 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_burning_time"),
+                        .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_burning_time"), // Decreases burning time by 97% (only for visual since fire res is applied)
                                 -0.97, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
                         .build()));
 
@@ -95,7 +93,7 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_max_health"),
+                        .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_max_health"), // Increases health by 10 hearts
                                 20, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
         OCEAN_CROWN = register("ocean_crown", OceanCrown:: new, new Item.Settings()
@@ -107,9 +105,9 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_water_movement_efficiency"),
+                        .add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_water_movement_efficiency"), // Only effects walking speed for some reason
                                 1.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.SUBMERGED_MINING_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_submerged_mining_speed"),
+                        .add(EntityAttributes.SUBMERGED_MINING_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_submerged_mining_speed"), // Increased mining efficiency underwater
                                 4.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
@@ -122,9 +120,9 @@ public class ModItems {
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.BLOCK_INTERACTION_RANGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_block_interaction_range"),
+                        .add(EntityAttributes.BLOCK_INTERACTION_RANGE, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_block_interaction_range"), // Increases reach by 3 but not hit range
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.LUCK, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_luck"),
+                        .add(EntityAttributes.LUCK, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_luck"), // Increased luck by 2
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
     }

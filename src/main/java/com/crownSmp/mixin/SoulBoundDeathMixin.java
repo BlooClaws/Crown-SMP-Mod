@@ -35,7 +35,7 @@ public abstract class SoulBoundDeathMixin {
 	@Inject(method = "dropAll", at = @At("TAIL"))
 	private void restoreSoulBoundAfterDrop(CallbackInfo ci) {
 		PlayerInventory inventory = (PlayerInventory) (Object) this;
-		// Put the protected items back into the "dead" player's inventory
+		// Put the protected items back into the player's inventory
 		savedSoulBoundItems.forEach(inventory::setStack);
 		savedSoulBoundItems.clear();
 	}

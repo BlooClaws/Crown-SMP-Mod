@@ -21,11 +21,10 @@ public class InfernoCrown extends Item {
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         super.inventoryTick(stack, world, entity, slot);
 
-        // Fire Resistance
+        // Fire resistance
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
             if (headStack == stack) {
-                // Apply Fire Resistance for 10 seconds
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.FIRE_RESISTANCE, 0, 0, false, false, false));
 
@@ -36,11 +35,10 @@ public class InfernoCrown extends Item {
                     if (!handStack.isEmpty()) {
                         ItemStack result = getSmeltedResult(world, handStack);
 
-                        // If the result is different from the original, smelting happened
                         if (result != handStack) {
-                            // Shrink original stack by 1
+                            // Takes 1 of the original stack
                             handStack.decrement(1);
-                            // Give the player 1 of the cooked version
+                            // Gives the player 1 of the cooked version
                             player.getInventory().offerOrDrop(result.copyWithCount(1));
 
                             // Visual/Sound feedback
@@ -54,15 +52,12 @@ public class InfernoCrown extends Item {
         }
     }
     private ItemStack getSmeltedResult(ServerWorld world, ItemStack stack) {
-        // 1. Wrap the stack in the new 1.21 input type
+
         SingleStackRecipeInput input = new SingleStackRecipeInput(stack);
 
-        // 2. Query the RecipeManager using the new input wrapper
         return world.getRecipeManager()
                 .getFirstMatch(RecipeType.SMELTING, input, world)
                 .map(recipeEntry -> {
-                    // 1.21 uses RecipeEntry; we need to call .value() to get the actual recipe
-                    // Optional: Ensure the result stack size matches the input if needed
                     return recipeEntry.value().craft(input, world.getRegistryManager());
                 })
                 .orElse(stack);

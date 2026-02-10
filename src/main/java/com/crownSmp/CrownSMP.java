@@ -26,6 +26,7 @@ public class CrownSMP implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
+
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final ComponentType<Unit> SOUL_BOUND = Registry.register(
@@ -43,15 +44,14 @@ public class CrownSMP implements ModInitializer {
 
 		ModItems.registerItems();
 
-		// FIRE ASPECT LOGIC: Triggered when ANY entity is hit
+		// Fire aspect no matter what is held
 		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			// We only care about what happens on the server
 			if (!world.isClient()) {
 				ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
 
-				// Check if the player is wearing your specific crown
+				// Checks if the player is wearing the inferno crown
 				if (headStack.getItem() instanceof InfernoCrown) {
-					// Seconds Enemy is on Fire
+					// How many seconds of fire is applied (4.0 is equal to fire aspect one)
 					entity.setOnFireFor(4.0f);
 				}
 			}
@@ -62,7 +62,7 @@ public class CrownSMP implements ModInitializer {
 			for (ServerWorld world : server.getWorlds()) {
 				for (Entity entity : world.iterateEntities()) {
 					if (entity instanceof IronGolemEntity golem && golem.isPlayerCreated()) {
-						// If the "timer" (Luck effect) is gone, discard the golem
+						// Using the applied speed and glow effect as a built-in timer
 						if (!golem.hasStatusEffect(StatusEffects.SPEED)) {
 							// Visual effect before they vanish
 							world.getScoreboard().clearTeam(golem.getUuidAsString());

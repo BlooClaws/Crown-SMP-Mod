@@ -19,11 +19,11 @@ public class OceanCrown extends Item {
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         super.inventoryTick(stack, world, entity, slot);
 
-        // Fire Resistance
+        // Ocean crown effects
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
             if (headStack == stack) {
-                // Apply Fire Resistance for 10 seconds
+                // Apply effects
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.DOLPHINS_GRACE, 0, 0, false, false, false));
                 player.addStatusEffect(new StatusEffectInstance(
