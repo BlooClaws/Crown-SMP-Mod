@@ -15,6 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.util.Unit;
 
 import java.util.Collections;
 
@@ -48,7 +49,7 @@ public class ModItems {
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown")
                         .formatted(Formatting.BLUE, Formatting.BOLD))
-                .component(DataComponentTypes.DEATH_PROTECTION, new DeathProtectionComponent(Collections.emptyList()))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "agility_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -65,7 +66,7 @@ public class ModItems {
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Strength Crown")
                         .formatted(Formatting.RED, Formatting.BOLD))
-                .component(DataComponentTypes.DEATH_PROTECTION, new DeathProtectionComponent(Collections.emptyList()))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "strength_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -80,6 +81,7 @@ public class ModItems {
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Inferno Crown")
                         .formatted(Formatting.GOLD, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "inferno_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -92,6 +94,7 @@ public class ModItems {
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Health Crown")
                         .formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -103,6 +106,7 @@ public class ModItems {
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Oceanic Crown")
                         .formatted(Formatting.DARK_BLUE, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ocean_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -116,7 +120,8 @@ public class ModItems {
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Wealth Crown")
-                        .formatted(Formatting.GREEN))
+                        .formatted(Formatting.DARK_GREEN, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
                 .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                         .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_armor"),
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
@@ -124,8 +129,6 @@ public class ModItems {
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .add(EntityAttributes.LUCK, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_luck"),
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                        .add(EntityAttributes.SPAWN_REINFORCEMENTS, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_spawn_reinforcements"),
-                                5.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
     }
 }

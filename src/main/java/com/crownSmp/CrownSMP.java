@@ -2,13 +2,20 @@ package com.crownSmp;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +27,12 @@ public class CrownSMP implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final ComponentType<Unit> SOUL_BOUND = Registry.register(
+			Registries.DATA_COMPONENT_TYPE,
+			Identifier.of(MOD_ID, "soul_bound"),
+			ComponentType.<Unit>builder().codec(Unit.CODEC)
+					.build());
 
 	@Override
 	public void onInitialize() {
@@ -52,16 +65,22 @@ public class CrownSMP implements ModInitializer {
 						// If the "timer" (Luck effect) is gone, discard the golem
 						if (!golem.hasStatusEffect(StatusEffects.SPEED)) {
 							// Visual effect before they vanish
-							world.spawnParticles(net.minecraft.particle.ParticleTypes.POOF,
-									golem.getX(), golem.getY() + 1, golem.getZ(), 10, 0.2, 0.2, 0.2, 0.1);
+							world.getScoreboard().clearTeam(golem.getUuidAsString());
+
+							world.spawnParticles(ParticleTypes.HAPPY_VILLAGER,
+									golem.getX(), golem.getY() + 1, golem.getZ(), 20, 0.5, 0.5, 0.5, 0.1);
 							golem.discard();
 
+							Team wealthTeam = world.getScoreboard().getTeam("wealth_guards");
+							if (wealthTeam != null) world.getScoreboard().addScoreHolderToTeam(golem.getNameForScoreboard(), wealthTeam);
 
-							LOGGER.info("Hello Fabric world!");
 						}
 					}
 				}
 			}
 		});
+
+		LOGGER.info("Hello Fabric world!");
+
 	}
 }

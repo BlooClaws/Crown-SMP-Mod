@@ -7,7 +7,11 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.entity.EntityType;
@@ -51,8 +55,25 @@ public class WealthCrown extends Item {
                 IronGolemEntity golem = EntityType.IRON_GOLEM.spawn(world, player.getBlockPos(), net.minecraft.entity.SpawnReason.MOB_SUMMONED);
                 if (golem != null) {
                     golem.setPlayerCreated(true); // Prevents it from attacking the player
+                    golem.setCustomName(Text.literal("Wealth Guard").formatted(Formatting.GREEN));
+                    golem.setCustomNameVisible(true);
+
+                    Scoreboard scoreboard = world.getScoreboard();
+                    String teamName = "wealth_guards";
+                    Team team = scoreboard.getTeam(teamName);
+
+                    // Create the team if it doesn't exist
+                    if (team == null) {
+                        team = scoreboard.addTeam(teamName);
+                        team.setColor(Formatting.GREEN);
+                    }
+
+                    // 2. ADD GOLEM TO TEAM
+                    // Use the UUID string or name for the scoreboard
+                    scoreboard.addScoreHolderToTeam(golem.getUuidAsString(), team);
 
                     golem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0, false, false, false));
+                    golem.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0, false, false, false));
 
                     // Set the golem's target to the player's attacker if they exist
                     if (player.getAttacker() != null) {
