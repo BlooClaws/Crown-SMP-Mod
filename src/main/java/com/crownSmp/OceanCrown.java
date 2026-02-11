@@ -29,7 +29,7 @@ public class OceanCrown extends Item {
                 player.addStatusEffect(new StatusEffectInstance(
                         StatusEffects.WATER_BREATHING, 0, 0, false, false, false));
                 player.addStatusEffect(new StatusEffectInstance(
-                        StatusEffects.NIGHT_VISION, 0, 0, false, false, false));
+                        StatusEffects.NIGHT_VISION, 5, 0, false, false, false));
             }
         }
     }
