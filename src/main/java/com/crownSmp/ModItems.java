@@ -129,7 +129,7 @@ public class ModItems {
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        ICE_CROWN = register("ice_crown", Item:: new, new Item.Settings()
+        ICE_CROWN = register("ice_crown", IceCrown:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                         .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Ice Crown")
