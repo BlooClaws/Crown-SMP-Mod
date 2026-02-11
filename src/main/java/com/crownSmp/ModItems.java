@@ -27,6 +27,8 @@ public class ModItems {
     public static Item HEALTH_CROWN;
     public static Item OCEAN_CROWN;
     public static Item WEALTH_CROWN;
+    public static Item ICE_CROWN;
+    public static Item FAIRY_CROWN;
 
 
     private static Item register(String name, java.util.function.Function<Item.Settings, Item> factory, Item.Settings settings) {
@@ -96,6 +98,7 @@ public class ModItems {
                         .add(EntityAttributes.MAX_HEALTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "health_crown_max_health"), // Increases health by 10 hearts
                                 20, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
+
         OCEAN_CROWN = register("ocean_crown", OceanCrown:: new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
@@ -124,6 +127,36 @@ public class ModItems {
                                 3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .add(EntityAttributes.LUCK, new EntityAttributeModifier(Identifier.of(MOD_ID, "wealth_crown_luck"), // Increased luck by 2
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .build()));
+
+        ICE_CROWN = register("ice_crown", Item:: new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                        .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Ice Crown")
+                                .formatted(Formatting.AQUA, Formatting.BOLD))
+                        .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
+                        .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                                .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_armor"),
+                                        3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                                .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_burning_time"),
+                                        -0.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                                .add(EntityAttributes.FALL_DAMAGE_MULTIPLIER, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_fall_damage_multiplier"),
+                                        0.25, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                                .build()));
+
+        FAIRY_CROWN = register("fairy_crown", Item:: new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Fairy Crown")
+                        .formatted(Formatting.DARK_PURPLE, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "fairy_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.FALL_DAMAGE_MULTIPLIER, new EntityAttributeModifier(Identifier.of(MOD_ID, "fairy_crown_fall_damage_multiplier"),
+                                -1.0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.FLYING_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "fairy_crown_flying_speed"),
+                                1.6, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
     }
 }
