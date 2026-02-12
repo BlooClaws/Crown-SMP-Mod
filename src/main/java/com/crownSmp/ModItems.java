@@ -2,6 +2,7 @@ package com.crownSmp;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -29,6 +30,8 @@ public class ModItems {
     public static Item WEALTH_CROWN;
     public static Item ICE_CROWN;
     public static Item FAIRY_CROWN;
+    public static Item GOBLIN_CROWN;
+    public static Item FAIRY_CROWN_PET_SPAWN_EGG;
 
 
     private static Item register(String name, java.util.function.Function<Item.Settings, Item> factory, Item.Settings settings) {
@@ -39,9 +42,10 @@ public class ModItems {
 
         return Registry.register(Registries.ITEM, key, item);
     }
+
     public static void registerItems() {
 // Crown #1
-        AGILITY_CROWN = register("agility_crown", Item:: new, new Item.Settings()
+        AGILITY_CROWN = register("agility_crown", Item::new, new Item.Settings()
                 .maxCount(1) // Sets stack count to 1
                 .equippable(EquipmentSlot.HEAD) // Makes equippable to helmet slot
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown") // Turns the text blue in color and bold
@@ -58,7 +62,7 @@ public class ModItems {
                                 4, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD) // AttributeModifierSlot.HEAD makes it so you only get the effects when wearing it
                         .build()));
 
-        STRENGTH_CROWN = register("strength_crown", Item:: new, new Item.Settings()
+        STRENGTH_CROWN = register("strength_crown", Item::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Strength Crown")
@@ -73,7 +77,7 @@ public class ModItems {
                                 -2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        INFERNO_CROWN = register("inferno_crown", InfernoCrown:: new, new Item.Settings() // Instead of Item:: new it is InfernoCrown:: new so we can call InfernoCrown.java for fire res and smelting
+        INFERNO_CROWN = register("inferno_crown", InfernoCrown::new, new Item.Settings() // Instead of Item:: new it is InfernoCrown:: new so we can call InfernoCrown.java for fire res and smelting
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Inferno Crown")
@@ -86,7 +90,7 @@ public class ModItems {
                                 -0.97, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        HEALTH_CROWN = register("health_crown", Item:: new, new Item.Settings()
+        HEALTH_CROWN = register("health_crown", Item::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Health Crown")
@@ -99,7 +103,7 @@ public class ModItems {
                                 20, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        OCEAN_CROWN = register("ocean_crown", OceanCrown:: new, new Item.Settings()
+        OCEAN_CROWN = register("ocean_crown", OceanCrown::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Oceanic Crown")
@@ -114,7 +118,7 @@ public class ModItems {
                                 4.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        WEALTH_CROWN = register("wealth_crown", WealthCrown:: new, new Item.Settings()
+        WEALTH_CROWN = register("wealth_crown", WealthCrown::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Wealth Crown")
@@ -129,22 +133,22 @@ public class ModItems {
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        ICE_CROWN = register("ice_crown", Item:: new, new Item.Settings()
+        ICE_CROWN = register("ice_crown", Item::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
-                        .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Ice Crown")
-                                .formatted(Formatting.AQUA, Formatting.BOLD))
-                        .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
-                        .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                                .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_armor"),
-                                        3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
-                                .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_burning_time"),
-                                        -0.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                                .add(EntityAttributes.FALL_DAMAGE_MULTIPLIER, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_fall_damage_multiplier"),
-                                        0.25, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
-                                .build()));
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Ice Crown")
+                        .formatted(Formatting.AQUA, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.BURNING_TIME, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_burning_time"),
+                                -0.5, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.FALL_DAMAGE_MULTIPLIER, new EntityAttributeModifier(Identifier.of(MOD_ID, "ice_crown_fall_damage_multiplier"),
+                                0.25, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .build()));
 
-        FAIRY_CROWN = register("fairy_crown", Item:: new, new Item.Settings()
+        FAIRY_CROWN = register("fairy_crown", FairyCrown::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Fairy Crown")
@@ -158,5 +162,23 @@ public class ModItems {
                         .add(EntityAttributes.FLYING_SPEED, new EntityAttributeModifier(Identifier.of(MOD_ID, "fairy_crown_flying_speed"),
                                 1.6, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
+        GOBLIN_CROWN = register("goblin_crown", Item::new, new Item.Settings()
+                .maxCount(1)
+                .equippable(EquipmentSlot.HEAD)
+                .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Goblin Crown")
+                        .formatted(Formatting.GREEN, Formatting.BOLD))
+                .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE)
+                .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                        .add(EntityAttributes.ARMOR, new EntityAttributeModifier(Identifier.of(MOD_ID, "goblin_crown_armor"),
+                                3.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
+                        .add(EntityAttributes.JUMP_STRENGTH, new EntityAttributeModifier(Identifier.of(MOD_ID, "goblin_crown_jump_strength"),
+                                2.0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
+                        .build()));
+
+        FAIRY_CROWN_PET_SPAWN_EGG = Registry.register(
+                Registries.ITEM,
+                Identifier.of(MOD_ID, "fairy_pet_spawn_egg"),
+                new SpawnEggItem(new Item.Settings())
+        );
     }
 }
