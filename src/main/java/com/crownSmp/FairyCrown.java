@@ -1,6 +1,5 @@
 package com.crownSmp;
 
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +21,7 @@ public class FairyCrown extends Item {
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
             if (headStack == stack) {
-
+                System.out.println();
             }
         }
     }

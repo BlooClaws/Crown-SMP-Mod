@@ -6,14 +6,18 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
@@ -21,8 +25,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.crownSmp.ModItems.FAIRY_CROWN_PET_SPAWN_EGG;
 
 
 public class CrownSMP implements ModInitializer {
@@ -39,6 +41,20 @@ public class CrownSMP implements ModInitializer {
             Identifier.of(MOD_ID, "soul_bound"),
             ComponentType.<Unit>builder().codec(Unit.CODEC)
                     .build());
+
+    public static final RegistryKey<EntityType<?>> FAIRY_PET_KEY = RegistryKey.of(
+            RegistryKeys.ENTITY_TYPE,
+            Identifier.of("crown_smp", "fairy_pet")
+    );
+
+    // Register the Entity using that Key
+    public static final EntityType<FairyCrownPet> FAIRY_PET_ENTITY_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            FAIRY_PET_KEY, // Use the key here
+            EntityType.Builder.create(FairyCrownPet::new, SpawnGroup.CREATURE)
+                    .dimensions(0.6f, 0.6f)
+                    .build(FAIRY_PET_KEY) // Pass the key here as the argument
+    );
 
     @Override
     public void onInitialize() {

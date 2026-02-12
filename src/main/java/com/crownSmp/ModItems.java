@@ -48,6 +48,7 @@ public class ModItems {
         AGILITY_CROWN = register("agility_crown", Item::new, new Item.Settings()
                 .maxCount(1) // Sets stack count to 1
                 .equippable(EquipmentSlot.HEAD) // Makes equippable to helmet slot
+                .modelId(Identifier.of(MOD_ID, "agility_crown"))
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Agility Crown") // Turns the text blue in color and bold
                         .formatted(Formatting.BLUE, Formatting.BOLD))
                 .component(CrownSMP.SOUL_BOUND, Unit.INSTANCE) // Keeps the item on death
@@ -133,7 +134,7 @@ public class ModItems {
                                 2.0, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.HEAD)
                         .build()));
 
-        ICE_CROWN = register("ice_crown", Item::new, new Item.Settings()
+        ICE_CROWN = register("ice_crown", IceCrown::new, new Item.Settings()
                 .maxCount(1)
                 .equippable(EquipmentSlot.HEAD)
                 .component(DataComponentTypes.CUSTOM_NAME, Text.literal("Ice Crown")
@@ -175,10 +176,17 @@ public class ModItems {
                                 2.0, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE), AttributeModifierSlot.HEAD)
                         .build()));
 
+        RegistryKey<Item> eggKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "fairy_pet_spawn_egg"));
+
+// 2. Register using the key and the new .spawnEgg settings method
         FAIRY_CROWN_PET_SPAWN_EGG = Registry.register(
                 Registries.ITEM,
-                Identifier.of(MOD_ID, "fairy_pet_spawn_egg"),
-                new SpawnEggItem(new Item.Settings())
+                eggKey,
+                new SpawnEggItem(
+                        new Item.Settings()
+                                .registryKey(eggKey) // This fixes "Item id not set"
+                                .spawnEgg(CrownSMP.FAIRY_PET_ENTITY_TYPE) // This adds the entity/colors
+                )
         );
     }
 }
